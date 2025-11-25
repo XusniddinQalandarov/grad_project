@@ -1,0 +1,2 @@
+options:
+  delete-conflicting-outputs: true
