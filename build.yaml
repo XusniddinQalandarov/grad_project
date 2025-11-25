@@ -1,2 +1,7 @@
-options:
-  delete-conflicting-outputs: true
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          delete-conflicting-outputs: true
+

@@ -1,6 +1,32 @@
-# Grad Project - Flutter Boilerplate
+# Grad Project - University Management App
 
-A complete Flutter application following **Clean Architecture**, **SOLID principles**, and Flutter/Dart best practices.
+A Flutter application following Clean Architecture principles with role-based authentication for managing university canteen, rooms, schedules, and more.
+
+## 🎯 Features
+
+### 🔐 Role-Based Authentication
+- **Students**: Full access to all features (Canteen, Rooms/Teaching, Schedule/Assignments, Profile)
+- **Cooks**: Canteen management interface (Add, Edit, Delete meals)
+
+### 🍽️ Canteen Management
+**For Students:**
+- View available meals with images
+- See meal details (calories, ingredients, price)
+- Browse by categories
+- Real-time updates when cooks make changes
+
+**For Cooks:**
+- Add new meals with photos (camera or gallery)
+- Edit existing meals
+- Manage inventory (quantity, availability)
+- Upload meal images to Firebase Storage
+- Delete meals with confirmation
+- Real-time sync with student views
+
+### 🏫 Other Features
+- **Rooms & Teaching**: Manage classroom information
+- **Schedule & Assignments**: Academic calendar and tasks
+- **Profile**: User information and logout
 
 ## 🏗️ Architecture
 
@@ -13,13 +39,32 @@ lib/
 │   ├── widgets/            # Reusable UI components
 │   └── utils/              # Validators, extensions
 ├── navigation/             # Routing configuration
+│   ├── app_router.dart     # Role-based routing
+│   ├── nav_scaffold.dart   # Student navigation (4 tabs)
+│   └── cook_nav_scaffold.dart  # Cook navigation (2 tabs)
 ├── features/               # Feature modules
-│   ├── canteen/           # Canteen menu feature
+│   ├── auth/              # Authentication with role detection
+│   ├── canteen/           # Canteen menu (student + cook)
 │   ├── rooms_teaching/    # Rooms & peer teaching
 │   ├── schedule_assignments/  # Schedule, assignments, GPA
 │   └── profile/           # User profile & settings
-└── main.dart              # App entry point
+└── main.dart              # App entry point with Firebase init
 ```
+
+### Tech Stack
+- **Framework**: Flutter 3.9.2+
+- **State Management**: Riverpod (riverpod_annotation)
+- **Navigation**: go_router with StatefulShellRoute
+- **Firebase**: Authentication, Firestore, Storage
+- **Code Generation**: freezed, json_serializable, build_runner
+- **Image Handling**: image_picker
+
+### Principles
+- ✅ **Clean Architecture** - Separation of concerns (Domain, Data, Presentation)
+- ✅ **SOLID** - Single responsibility, open-closed, dependency inversion
+- ✅ **DRY** - Reusable widgets and utilities
+- ✅ **Immutability** - Freezed for value objects
+- ✅ **Type Safety** - Strict null safety
 
 ### Feature Structure (Clean Architecture)
 
@@ -205,5 +250,54 @@ AppTextStyles.bodyMedium(context)
 
 ---
 
-**Note**: This is a boilerplate project showcasing best practices. Replace mock data with real API calls and add your business logic as needed.
+## 🔑 Demo Accounts
+
+### Cook Accounts (Full Meal Management)
+- **Email**: `cook@canteen.com` | **Password**: `cook123456`
+- **Email**: `chef@kitchen.com` | **Password**: `cook123456`
+
+### Student Accounts (Read-Only Canteen)
+- **Email**: `student@university.edu` | **Password**: `student123456`
+- **Email**: `john.doe@university.edu` | **Password**: `student123456`
+
+## 📚 Additional Documentation
+
+- **[COOK_FEATURES.md](./COOK_FEATURES.md)** - Complete guide to cook meal management features
+- **[FIREBASE_COOK_SETUP.md](./FIREBASE_COOK_SETUP.md)** - Firebase setup with security rules
+- **[AUTH_IMPLEMENTATION.md](./AUTH_IMPLEMENTATION.md)** - Authentication system details
+- **[FIREBASE_SETUP.md](./FIREBASE_SETUP.md)** - Initial Firebase configuration
+- **[.cursorrules](./.cursorrules)** - AI development guidelines
+
+## 🔧 Development
+
+### Code Generation
+After modifying files with annotations (`@freezed`, `@riverpod`, etc.):
+```bash
+# Watch mode (auto-regenerate)
+dart run build_runner watch --delete-conflicting-outputs
+
+# Single build
+dart run build_runner build --delete-conflicting-outputs
+```
+
+### Testing
+```bash
+flutter test
+```
+
+## 🔥 Firebase Setup
+
+See [FIREBASE_COOK_SETUP.md](./FIREBASE_COOK_SETUP.md) for complete instructions.
+
+**Quick checklist:**
+- ✅ Enable Firestore Database
+- ✅ Configure Firestore security rules
+- ✅ Enable Firebase Storage
+- ✅ Configure Storage security rules
+- ✅ Enable Email/Password authentication
+- ✅ Add demo accounts
+
+---
+
+**Note**: This project demonstrates Clean Architecture, role-based auth, and real-time Firebase integration with Flutter best practices.
 

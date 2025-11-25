@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/section_title.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 
 /// Provider for theme mode
 final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
@@ -15,6 +16,8 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
     final brightness = Theme.of(context).brightness;
+    final authState = ref.watch(authNotifierProvider);
+    final user = authState.user;
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +27,7 @@ class ProfileScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildProfileCard(context, brightness),
+          _buildProfileCard(context, brightness, user?.name ?? 'User', user?.email ?? '', user?.role.value ?? 'student'),
           const SizedBox(height: 24),
           const SectionTitle(title: 'Settings'),
           const SizedBox(height: 12),
@@ -66,22 +69,22 @@ class ProfileScreen extends ConsumerWidget {
             onTap: () {},
           ),
           const SizedBox(height: 24),
-          _buildLogoutButton(context),
+          _buildLogoutButton(context, ref),
         ],
       ),
     );
   }
 
-  Widget _buildProfileCard(BuildContext context, Brightness brightness) {
+  Widget _buildProfileCard(BuildContext context, Brightness brightness, String name, String email, String role) {
     return AppCardElevated(
       child: Row(
         children: [
           CircleAvatar(
             radius: 40,
             backgroundColor: AppColors.primary(brightness),
-            child: const Text(
-              'JD',
-              style: TextStyle(
+            child: Text(
+              name.isNotEmpty ? name[0].toUpperCase() : 'U',
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -89,21 +92,35 @@ class ProfileScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'John Doe',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  email,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary(brightness).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    role.toUpperCase(),
+                    style: TextStyle(
+                      color: AppColors.primary(brightness),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Computer Science'),
-                SizedBox(height: 2),
-                Text('Student ID: 12345'),
               ],
             ),
           ),
@@ -218,9 +235,11 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context) {
+  Widget _buildLogoutButton(BuildContext context, WidgetRef ref) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        ref.read(authNotifierProvider.notifier).signOut();
+      },
       icon: const Icon(Icons.logout),
       label: const Text('Logout'),
       style: ElevatedButton.styleFrom(

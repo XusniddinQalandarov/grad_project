@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'core/theme/app_colors.dart';
 import 'navigation/app_router.dart';
 import 'features/profile/presentation/screens/profile_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -18,6 +27,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final router = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
       title: 'Grad Project',
@@ -25,7 +35,7 @@ class MyApp extends ConsumerWidget {
       themeMode: themeMode,
       theme: _buildLightTheme(),
       darkTheme: _buildDarkTheme(),
-      routerConfig: goRouter,
+      routerConfig: router,
     );
   }
 

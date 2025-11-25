@@ -16,6 +16,13 @@ _$MenuItemImpl _$$MenuItemImplFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
       availableDate: DateTime.parse(json['availableDate'] as String),
+      ingredients:
+          (json['ingredients'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      quantityAvailable: (json['quantityAvailable'] as num?)?.toInt() ?? 0,
+      isAvailable: json['isAvailable'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$MenuItemImplToJson(_$MenuItemImpl instance) =>
@@ -28,4 +35,7 @@ Map<String, dynamic> _$$MenuItemImplToJson(_$MenuItemImpl instance) =>
       'description': instance.description,
       'imageUrl': instance.imageUrl,
       'availableDate': instance.availableDate.toIso8601String(),
+      'ingredients': instance.ingredients,
+      'quantityAvailable': instance.quantityAvailable,
+      'isAvailable': instance.isAvailable,
     };

@@ -55,6 +55,7 @@ class CanteenLocalDataSource {
         calories: 450,
         tags: ['healthy', 'high-protein', 'gluten-free'],
         description: 'Fresh greens with grilled chicken breast',
+        imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
         availableDate: today,
       ),
       MenuItem(
@@ -64,6 +65,7 @@ class CanteenLocalDataSource {
         calories: 850,
         tags: ['popular', 'comfort-food'],
         description: 'Classic beef burger with crispy fries',
+        imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
         availableDate: today,
       ),
       MenuItem(
@@ -73,6 +75,7 @@ class CanteenLocalDataSource {
         calories: 650,
         tags: ['vegetarian', 'popular'],
         description: 'Fresh vegetables on thin crust',
+        imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400',
         availableDate: today,
       ),
       MenuItem(
@@ -82,6 +85,7 @@ class CanteenLocalDataSource {
         calories: 520,
         tags: ['healthy', 'high-protein', 'gluten-free'],
         description: 'Grilled salmon with quinoa and vegetables',
+        imageUrl: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400',
         availableDate: today,
       ),
       MenuItem(
@@ -91,6 +95,7 @@ class CanteenLocalDataSource {
         calories: 720,
         tags: ['comfort-food', 'popular'],
         description: 'Creamy pasta with bacon',
+        imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400',
         availableDate: today,
       ),
       
@@ -102,6 +107,7 @@ class CanteenLocalDataSource {
         calories: 380,
         tags: ['healthy', 'vegetarian'],
         description: 'Classic Caesar with romaine lettuce',
+        imageUrl: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400',
         availableDate: today.add(const Duration(days: 1)),
       ),
       MenuItem(
@@ -111,6 +117,7 @@ class CanteenLocalDataSource {
         calories: 480,
         tags: ['high-protein', 'popular'],
         description: 'Grilled chicken in a tortilla wrap',
+        imageUrl: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400',
         availableDate: today.add(const Duration(days: 1)),
       ),
       MenuItem(
@@ -120,6 +127,7 @@ class CanteenLocalDataSource {
         calories: 420,
         tags: ['vegetarian', 'vegan', 'healthy'],
         description: 'Mixed vegetables with rice',
+        imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400',
         availableDate: today.add(const Duration(days: 1)),
       ),
       MenuItem(
@@ -129,6 +137,7 @@ class CanteenLocalDataSource {
         calories: 780,
         tags: ['comfort-food'],
         description: 'Battered fish with chips',
+        imageUrl: 'https://images.unsplash.com/photo-1579208575657-c595a05383b7?w=400',
         availableDate: today.add(const Duration(days: 1)),
       ),
       MenuItem(
@@ -138,6 +147,7 @@ class CanteenLocalDataSource {
         calories: 600,
         tags: ['vegetarian', 'popular'],
         description: 'Traditional tomato and mozzarella',
+        imageUrl: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400',
         availableDate: today.add(const Duration(days: 1)),
       ),
     ];

@@ -23,11 +23,17 @@ class MenuItemCard extends StatelessWidget {
     return AppCardElevated(
       onTap: onTap,
       margin: const EdgeInsets.only(bottom: 12),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(context, brightness),
-          if (item.description != null) ...[
+          _buildImage(),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, brightness),
+                if (item.description != null) ...[
             const SizedBox(height: 8),
             Text(
               item.description!,
@@ -39,6 +45,41 @@ class MenuItemCard extends StatelessWidget {
           const SizedBox(height: 12),
           _buildFooter(context, brightness),
         ],
+      ),
+    ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    final hasImage = item.imageUrl != null && item.imageUrl!.isNotEmpty;
+    
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 80,
+        height: 80,
+        color: hasImage ? null : AppColors.lightSurfaceVariant,
+        child: hasImage
+            ? Image.network(
+                item.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return _buildPlaceholder();
+                },
+              )
+            : _buildPlaceholder(),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Center(
+      child: Icon(
+        Icons.restaurant_menu,
+        size: 32,
+        color: Colors.grey[400],
       ),
     );
   }

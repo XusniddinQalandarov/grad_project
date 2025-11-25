@@ -6,6 +6,7 @@ import '../providers/canteen_provider.dart';
 import '../widgets/menu_day_selector.dart';
 import '../widgets/menu_filter_chips.dart';
 import '../widgets/menu_item_card.dart';
+import '../widgets/menu_item_detail_modal.dart';
 
 /// Main canteen screen showing daily/weekly menu
 class CanteenScreen extends ConsumerWidget {
@@ -43,14 +44,12 @@ class CanteenScreen extends ConsumerWidget {
     Function(DateTime) onDateSelected,
   ) {
     return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          MenuDaySelector(
-            selectedDate: selectedDate,
-            onDateSelected: onDateSelected,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: MenuDaySelector(
+          selectedDate: selectedDate,
+          onDateSelected: onDateSelected,
+        ),
       ),
     );
   }
@@ -67,11 +66,14 @@ class CanteenScreen extends ConsumerWidget {
     }
 
     return SliverToBoxAdapter(
-      child: MenuFilterChips(
-        availableTags: availableTags,
-        selectedTags: state.selectedTags,
-        onTagToggle: notifier.toggleTag,
-        onClearAll: notifier.clearTags,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: MenuFilterChips(
+          availableTags: availableTags,
+          selectedTags: state.selectedTags,
+          onTagToggle: notifier.toggleTag,
+          onClearAll: notifier.clearTags,
+        ),
       ),
     );
   }
@@ -118,7 +120,11 @@ class CanteenScreen extends ConsumerWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return MenuItemCard(item: filteredItems[index]);
+            final item = filteredItems[index];
+            return MenuItemCard(
+              item: item,
+              onTap: () => MenuItemDetailModal.show(context, item),
+            );
           },
           childCount: filteredItems.length,
         ),

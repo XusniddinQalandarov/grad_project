@@ -15,6 +15,9 @@ class MenuItem with _$MenuItem {
     String? description,
     String? imageUrl,
     required DateTime availableDate,
+    @Default([]) List<String> ingredients,
+    @Default(0) int quantityAvailable,
+    @Default(true) bool isAvailable,
   }) = _MenuItem;
 
   factory MenuItem.fromJson(Map<String, dynamic> json) =>

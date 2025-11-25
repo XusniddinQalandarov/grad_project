@@ -7,8 +7,8 @@ class AppColors {
   AppColors._();
 
   // Light Theme Colors
-  static const Color lightPrimary = Color(0xFF6750A4);
-  static const Color lightSecondary = Color(0xFF625B71);
+  static const Color lightPrimary = Color(0xFF1976D2);
+  static const Color lightSecondary = Color(0xFF0288D1);
   static const Color lightBackground = Color(0xFFFFFBFE);
   static const Color lightSurface = Color(0xFFFFFBFE);
   static const Color lightError = Color(0xFFB3261E);
@@ -26,12 +26,12 @@ class AppColors {
   static const Color lightTextTertiary = Color(0xFF79747E);
 
   // Dark Theme Colors
-  static const Color darkPrimary = Color(0xFFD0BCFF);
-  static const Color darkSecondary = Color(0xFFCCC2DC);
+  static const Color darkPrimary = Color(0xFF64B5F6);
+  static const Color darkSecondary = Color(0xFF4FC3F7);
   static const Color darkBackground = Color(0xFF1C1B1F);
   static const Color darkSurface = Color(0xFF1C1B1F);
   static const Color darkError = Color(0xFFF2B8B5);
-  static const Color darkOnPrimary = Color(0xFF371E73);
+  static const Color darkOnPrimary = Color(0xFF0D47A1);
   static const Color darkOnSecondary = Color(0xFF332D41);
   static const Color darkOnBackground = Color(0xFFE6E1E5);
   static const Color darkOnSurface = Color(0xFFE6E1E5);
@@ -48,6 +48,7 @@ class AppColors {
   static const Color success = Color(0xFF4CAF50);
   static const Color warning = Color(0xFFFFA726);
   static const Color info = Color(0xFF29B6F6);
+  static const Color error = Color(0xFFD32F2F);
   
   // Utility Colors
   static const Color divider = Color(0xFFE0E0E0);

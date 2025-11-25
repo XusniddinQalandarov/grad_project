@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "813142972042",
+    "project_id": "grad-project-mob",
+    "storage_bucket": "grad-project-mob.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813142972042:android:1a20aeeb2693dea694bf73",
+        "android_client_info": {
+          "package_name": "com.example.grad_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9_iK34W2Z8iUl0Qm_DOyEqkHsl3eah6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

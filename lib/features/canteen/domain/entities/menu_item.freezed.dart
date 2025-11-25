@@ -29,6 +29,9 @@ mixin _$MenuItem {
   String? get description => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   DateTime get availableDate => throw _privateConstructorUsedError;
+  List<String> get ingredients => throw _privateConstructorUsedError;
+  int get quantityAvailable => throw _privateConstructorUsedError;
+  bool get isAvailable => throw _privateConstructorUsedError;
 
   /// Serializes this MenuItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,6 +57,9 @@ abstract class $MenuItemCopyWith<$Res> {
     String? description,
     String? imageUrl,
     DateTime availableDate,
+    List<String> ingredients,
+    int quantityAvailable,
+    bool isAvailable,
   });
 }
 
@@ -80,6 +86,9 @@ class _$MenuItemCopyWithImpl<$Res, $Val extends MenuItem>
     Object? description = freezed,
     Object? imageUrl = freezed,
     Object? availableDate = null,
+    Object? ingredients = null,
+    Object? quantityAvailable = null,
+    Object? isAvailable = null,
   }) {
     return _then(
       _value.copyWith(
@@ -115,6 +124,18 @@ class _$MenuItemCopyWithImpl<$Res, $Val extends MenuItem>
                 ? _value.availableDate
                 : availableDate // ignore: cast_nullable_to_non_nullable
                       as DateTime,
+            ingredients: null == ingredients
+                ? _value.ingredients
+                : ingredients // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            quantityAvailable: null == quantityAvailable
+                ? _value.quantityAvailable
+                : quantityAvailable // ignore: cast_nullable_to_non_nullable
+                      as int,
+            isAvailable: null == isAvailable
+                ? _value.isAvailable
+                : isAvailable // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -139,6 +160,9 @@ abstract class _$$MenuItemImplCopyWith<$Res>
     String? description,
     String? imageUrl,
     DateTime availableDate,
+    List<String> ingredients,
+    int quantityAvailable,
+    bool isAvailable,
   });
 }
 
@@ -164,6 +188,9 @@ class __$$MenuItemImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? imageUrl = freezed,
     Object? availableDate = null,
+    Object? ingredients = null,
+    Object? quantityAvailable = null,
+    Object? isAvailable = null,
   }) {
     return _then(
       _$MenuItemImpl(
@@ -199,6 +226,18 @@ class __$$MenuItemImplCopyWithImpl<$Res>
             ? _value.availableDate
             : availableDate // ignore: cast_nullable_to_non_nullable
                   as DateTime,
+        ingredients: null == ingredients
+            ? _value._ingredients
+            : ingredients // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        quantityAvailable: null == quantityAvailable
+            ? _value.quantityAvailable
+            : quantityAvailable // ignore: cast_nullable_to_non_nullable
+                  as int,
+        isAvailable: null == isAvailable
+            ? _value.isAvailable
+            : isAvailable // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -216,7 +255,11 @@ class _$MenuItemImpl implements _MenuItem {
     this.description,
     this.imageUrl,
     required this.availableDate,
-  }) : _tags = tags;
+    final List<String> ingredients = const [],
+    this.quantityAvailable = 0,
+    this.isAvailable = true,
+  }) : _tags = tags,
+       _ingredients = ingredients;
 
   factory _$MenuItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$MenuItemImplFromJson(json);
@@ -243,10 +286,25 @@ class _$MenuItemImpl implements _MenuItem {
   final String? imageUrl;
   @override
   final DateTime availableDate;
+  final List<String> _ingredients;
+  @override
+  @JsonKey()
+  List<String> get ingredients {
+    if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_ingredients);
+  }
+
+  @override
+  @JsonKey()
+  final int quantityAvailable;
+  @override
+  @JsonKey()
+  final bool isAvailable;
 
   @override
   String toString() {
-    return 'MenuItem(id: $id, name: $name, price: $price, calories: $calories, tags: $tags, description: $description, imageUrl: $imageUrl, availableDate: $availableDate)';
+    return 'MenuItem(id: $id, name: $name, price: $price, calories: $calories, tags: $tags, description: $description, imageUrl: $imageUrl, availableDate: $availableDate, ingredients: $ingredients, quantityAvailable: $quantityAvailable, isAvailable: $isAvailable)';
   }
 
   @override
@@ -265,7 +323,15 @@ class _$MenuItemImpl implements _MenuItem {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.availableDate, availableDate) ||
-                other.availableDate == availableDate));
+                other.availableDate == availableDate) &&
+            const DeepCollectionEquality().equals(
+              other._ingredients,
+              _ingredients,
+            ) &&
+            (identical(other.quantityAvailable, quantityAvailable) ||
+                other.quantityAvailable == quantityAvailable) &&
+            (identical(other.isAvailable, isAvailable) ||
+                other.isAvailable == isAvailable));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -280,6 +346,9 @@ class _$MenuItemImpl implements _MenuItem {
     description,
     imageUrl,
     availableDate,
+    const DeepCollectionEquality().hash(_ingredients),
+    quantityAvailable,
+    isAvailable,
   );
 
   /// Create a copy of MenuItem
@@ -306,6 +375,9 @@ abstract class _MenuItem implements MenuItem {
     final String? description,
     final String? imageUrl,
     required final DateTime availableDate,
+    final List<String> ingredients,
+    final int quantityAvailable,
+    final bool isAvailable,
   }) = _$MenuItemImpl;
 
   factory _MenuItem.fromJson(Map<String, dynamic> json) =
@@ -327,6 +399,12 @@ abstract class _MenuItem implements MenuItem {
   String? get imageUrl;
   @override
   DateTime get availableDate;
+  @override
+  List<String> get ingredients;
+  @override
+  int get quantityAvailable;
+  @override
+  bool get isAvailable;
 
   /// Create a copy of MenuItem
   /// with the given fields replaced by the non-null parameter values.
