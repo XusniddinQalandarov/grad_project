@@ -1,0 +1,290 @@
+# Flutter Graduate Project - AI Development Guidelines
+
+## Project Overview
+This is a Flutter mobile application built with **Clean Architecture**, following **SOLID principles**, **DRY**, and Flutter/Dart best practices. The app serves as a graduate project with features for canteen menu, rooms/teaching management, schedule/assignments tracking, and user profile.
+
+## Core Architecture Rules
+
+### Clean Architecture Layers
+When creating new features, ALWAYS follow this structure:
+```
+lib/features/<feature_name>/
+├── domain/
+│   ├── entities/          # Business models (use Freezed)
+│   ├── repositories/      # Abstract repository interfaces
+│   └── usecases/          # Business logic use cases
+├── data/
+│   ├── models/            # Data models (if different from entities)
+│   ├── datasources/       # API clients, local storage
+│   └── repositories/      # Repository implementations
+└── presentation/
+    ├── screens/           # Full page screens
+    ├── widgets/           # Feature-specific widgets
+    ├── providers/         # Riverpod providers & notifiers
+    └── state/             # State management classes (use Freezed)
+```
+
+### SOLID Principles
+- **Single Responsibility**: Each class/file has ONE clear purpose
+- **Open/Closed**: Use abstract classes/interfaces for extensibility
+- **Liskov Substitution**: Implementations must honor repository contracts
+- **Interface Segregation**: Keep repository interfaces focused
+- **Dependency Inversion**: Depend on abstractions (repositories), not implementations
+
+### DRY (Don't Repeat Yourself)
+- Extract reusable widgets to `lib/core/widgets/`
+- Create utility functions in `lib/core/utils/`
+- Use extensions for common operations
+- Never duplicate business logic
+
+## Tech Stack & Dependencies
+
+### State Management
+- **flutter_riverpod**: Primary state management
+- Use `ConsumerWidget` or `ConsumerStatefulWidget` for screens
+- Use `StateNotifierProvider` for complex state
+- Use `Provider` or `StateProvider` for simple state
+- ALWAYS use `ref` parameter, NOT `context.read()`
+
+### Code Generation
+- **Freezed**: For immutable data classes (entities, state)
+- **json_serializable**: For JSON serialization
+- Run: `dart run build_runner build --delete-conflicting-outputs`
+- Always add `@freezed` and `part` directives correctly
+
+### Navigation
+- **go_router**: For declarative routing
+- Use `context.go()` for navigation
+- Define routes in `lib/navigation/app_router.dart`
+- Use `StatefulShellRoute` for bottom navigation
+
+### UI Standards
+- **Material 3** design system
+- Use `AppColors` from `lib/core/theme/app_colors.dart`
+- Use `AppTextStyles` from `lib/core/theme/app_text_styles.dart`
+- Support both light and dark themes
+
+## Coding Standards
+
+### Widget Composition
+- **Small, composable widgets** (< 100 lines each)
+- Extract complex widgets to separate files
+- Use const constructors whenever possible
+- Prefer composition over inheritance
+
+### Naming Conventions
+- Files: `snake_case.dart`
+- Classes: `PascalCase`
+- Variables/functions: `camelCase`
+- Private members: `_leadingUnderscore`
+- Providers: `<name>Provider` (e.g., `canteenNotifierProvider`)
+- Screens: `<Feature>Screen` (e.g., `CanteenScreen`)
+
+### Import Order
+1. Dart SDK imports (`dart:...`)
+2. Flutter imports (`package:flutter/...`)
+3. Third-party packages (`package:...`)
+4. Local imports (relative paths)
+5. Blank line between groups
+
+### File Organization
+```dart
+// 1. Imports (grouped)
+// 2. Part directives (for generated files)
+// 3. Constants
+// 4. Main class/function
+// 5. Private classes/functions
+// 6. Extensions (if any)
+```
+
+## Feature Development Workflow
+
+### When Creating a New Feature:
+1. **Start with Domain Layer**:
+   - Define entity with Freezed
+   - Create repository interface
+   - Write use cases (if complex logic)
+
+2. **Implement Data Layer**:
+   - Create data source (API/local)
+   - Implement repository interface
+   - Add mock data for development
+
+3. **Build Presentation Layer**:
+   - Create Freezed state class
+   - Create Riverpod provider/notifier
+   - Build UI screen with ConsumerWidget
+   - Extract reusable widgets
+
+4. **Run Code Generation**:
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+
+5. **Add to Router**:
+   - Define route in `app_router.dart`
+   - Add navigation item if needed
+
+### When Modifying Existing Code:
+- NEVER break existing functionality
+- Maintain consistency with existing patterns
+- Update related tests if they exist
+- Run `flutter analyze` before committing
+
+## Common Patterns
+
+### Provider Pattern (Riverpod)
+```dart
+// State class
+@freezed
+class FeatureState with _$FeatureState {
+  const factory FeatureState({
+    @Default([]) List<Item> items,
+    @Default(false) bool isLoading,
+    String? errorMessage,
+  }) = _FeatureState;
+}
+
+// Notifier
+class FeatureNotifier extends StateNotifier<FeatureState> {
+  FeatureNotifier(this._repository) : super(const FeatureState());
+  
+  final FeatureRepository _repository;
+  
+  Future<void> loadItems() async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    try {
+      final items = await _repository.getItems();
+      state = state.copyWith(items: items, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+}
+
+// Provider
+final featureNotifierProvider = 
+    StateNotifierProvider<FeatureNotifier, FeatureState>((ref) {
+  final repository = ref.watch(featureRepositoryProvider);
+  return FeatureNotifier(repository);
+});
+```
+
+### Screen Pattern
+```dart
+class FeatureScreen extends ConsumerWidget {
+  const FeatureScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(featureNotifierProvider);
+    
+    return Scaffold(
+      appBar: AppBar(title: const Text('Feature')),
+      body: state.isLoading
+          ? const AppLoader()
+          : state.errorMessage != null
+              ? ErrorState(
+                  title: 'Error',
+                  subtitle: state.errorMessage!,
+                  onRetry: () => ref.read(featureNotifierProvider.notifier).loadItems(),
+                )
+              : _buildContent(state),
+    );
+  }
+  
+  Widget _buildContent(FeatureState state) {
+    // Build UI here
+  }
+}
+```
+
+### Repository Pattern
+```dart
+// Abstract (domain layer)
+abstract class FeatureRepository {
+  Future<List<Item>> getItems();
+  Future<Item> getItemById(String id);
+  Future<void> saveItem(Item item);
+}
+
+// Implementation (data layer)
+class FeatureRepositoryImpl implements FeatureRepository {
+  const FeatureRepositoryImpl(this._dataSource);
+  
+  final FeatureDataSource _dataSource;
+  
+  @override
+  Future<List<Item>> getItems() async {
+    try {
+      return await _dataSource.fetchItems();
+    } catch (e) {
+      throw Exception('Failed to load items: $e');
+    }
+  }
+}
+```
+
+## Testing Guidelines
+- Write unit tests for use cases and repositories
+- Write widget tests for complex widgets
+- Mock dependencies using Mockito
+- Aim for >70% code coverage
+
+## Performance Best Practices
+- Use `const` constructors liberally
+- Implement `ListView.builder` for long lists
+- Use `CachedNetworkImage` for remote images
+- Avoid rebuilds with proper provider scoping
+- Use `select()` on providers when watching specific properties
+
+## Error Handling
+- Always catch and handle errors gracefully
+- Show user-friendly error messages
+- Use `ErrorState` widget for error UI
+- Log errors for debugging (use `debugPrint`)
+
+## Do NOT:
+- ❌ Use `BuildContext` for state management
+- ❌ Put business logic in widgets
+- ❌ Ignore const constructors
+- ❌ Create God classes (> 300 lines)
+- ❌ Use `context.read()` - use `ref.read()` instead
+- ❌ Mix presentation logic with business logic
+- ❌ Hardcode colors/text styles - use theme
+- ❌ Forget to run code generation after changing Freezed classes
+- ❌ Use `setState` when Riverpod is available
+
+## Always:
+- ✅ Follow Clean Architecture layers
+- ✅ Use Freezed for immutable data
+- ✅ Prefer composition over inheritance
+- ✅ Write self-documenting code with clear names
+- ✅ Use existing core widgets (`AppButton`, `AppCard`, etc.)
+- ✅ Check `lib/core/utils/extensions.dart` before creating utilities
+- ✅ Run `flutter analyze` to catch issues early
+- ✅ Use `ConsumerWidget` with `WidgetRef ref` parameter
+- ✅ Generate code after modifying Freezed classes
+
+## Project-Specific Notes
+- This is a graduate project showcasing Flutter best practices
+- Code quality and architecture matter more than speed
+- When in doubt, check the Canteen feature as reference implementation
+- All features use bottom navigation via `StatefulShellRoute`
+- Theme switching is managed via `themeModeProvider` in profile screen
+
+## Questions to Ask Before Coding
+1. Does this follow Clean Architecture?
+2. Am I using the correct layer for this code?
+3. Can I reuse an existing widget/util?
+4. Is this widget small and focused?
+5. Am I using Riverpod correctly with `ref`?
+6. Will I need to run code generation?
+7. Does this maintain existing patterns?
+
+---
+
+**Remember**: Quality over speed. This codebase is a showcase of Flutter best practices. Every line should be intentional and follow these guidelines.
