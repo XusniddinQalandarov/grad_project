@@ -5,10 +5,8 @@ import '../../../../core/widgets/app_card.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
-/// Provider for theme mode
 final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
-/// Profile & Settings screen
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 

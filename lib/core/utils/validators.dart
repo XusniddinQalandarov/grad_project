@@ -1,8 +1,6 @@
-/// Form validation utilities
 class Validators {
   Validators._();
 
-  /// Validates email format
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';
@@ -19,7 +17,6 @@ class Validators {
     return null;
   }
 
-  /// Validates required field
   static String? required(String? value, {String? fieldName}) {
     if (value == null || value.trim().isEmpty) {
       return '${fieldName ?? 'This field'} is required';
@@ -27,7 +24,6 @@ class Validators {
     return null;
   }
 
-  /// Validates minimum length
   static String? minLength(String? value, int length, {String? fieldName}) {
     if (value == null || value.isEmpty) {
       return '${fieldName ?? 'This field'} is required';
@@ -40,7 +36,6 @@ class Validators {
     return null;
   }
 
-  /// Validates maximum length
   static String? maxLength(String? value, int length, {String? fieldName}) {
     if (value != null && value.length > length) {
       return '${fieldName ?? 'This field'} must not exceed $length characters';
@@ -48,7 +43,6 @@ class Validators {
     return null;
   }
 
-  /// Validates phone number
   static String? phone(String? value) {
     if (value == null || value.isEmpty) {
       return 'Phone number is required';
@@ -63,7 +57,6 @@ class Validators {
     return null;
   }
 
-  /// Validates password strength
   static String? password(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
@@ -88,7 +81,6 @@ class Validators {
     return null;
   }
 
-  /// Validates number
   static String? number(String? value, {String? fieldName}) {
     if (value == null || value.isEmpty) {
       return '${fieldName ?? 'This field'} is required';
@@ -101,7 +93,6 @@ class Validators {
     return null;
   }
 
-  /// Validates positive number
   static String? positiveNumber(String? value, {String? fieldName}) {
     final numberError = number(value, fieldName: fieldName);
     if (numberError != null) return numberError;
@@ -113,7 +104,6 @@ class Validators {
     return null;
   }
 
-  /// Validates range
   static String? range(String? value, double min, double max, {String? fieldName}) {
     final numberError = number(value, fieldName: fieldName);
     if (numberError != null) return numberError;
@@ -126,7 +116,6 @@ class Validators {
     return null;
   }
 
-  /// Validates URL
   static String? url(String? value) {
     if (value == null || value.isEmpty) {
       return 'URL is required';
@@ -143,7 +132,6 @@ class Validators {
     return null;
   }
 
-  /// Composes multiple validators
   static String? compose(List<String? Function(String?)> validators, String? value) {
     for (final validator in validators) {
       final error = validator(value);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-/// Reusable card component with consistent styling
-/// Adapts to light/dark theme automatically
 class AppCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -66,7 +64,6 @@ class AppCard extends StatelessWidget {
   }
 }
 
-/// Elevated card variant with default shadow
 class AppCardElevated extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -96,7 +93,6 @@ class AppCardElevated extends StatelessWidget {
   }
 }
 
-/// Outlined card variant with border
 class AppCardOutlined extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;

@@ -3,7 +3,6 @@ import '../../../../core/widgets/section_title.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_button.dart';
 
-/// Unified Schedule, Assignments, and GPA screen
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
 
@@ -54,7 +53,6 @@ class _ScheduleScreenState extends State<ScheduleScreen>
   }
 }
 
-/// Schedule tab
 class _ScheduleTab extends StatelessWidget {
   const _ScheduleTab();
 
@@ -127,7 +125,6 @@ class _ScheduleTab extends StatelessWidget {
   }
 }
 
-/// Assignments tab
 class _AssignmentsTab extends StatelessWidget {
   const _AssignmentsTab();
 
@@ -254,7 +251,6 @@ class _AssignmentsTab extends StatelessWidget {
   }
 }
 
-/// GPA tab
 class _GpaTab extends StatelessWidget {
   const _GpaTab();
 

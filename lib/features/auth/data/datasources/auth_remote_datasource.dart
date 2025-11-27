@@ -2,13 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/entities/app_user.dart';
 import '../../domain/entities/user_role.dart';
 
-/// Remote data source for Firebase authentication
 class AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth;
 
   AuthRemoteDataSource(this._firebaseAuth);
 
-  /// Sign in with email and password
   Future<AppUser> signIn(String email, String password) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
@@ -21,7 +19,6 @@ class AuthRemoteDataSource {
         throw Exception('Sign in failed: User is null');
       }
 
-      // Determine role based on email domain
       final role = _getRoleFromEmail(email);
       
       return AppUser(
@@ -37,7 +34,6 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Sign out current user
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
@@ -46,7 +42,6 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Get current authenticated user
   Future<AppUser?> getCurrentUser() async {
     try {
       final user = _firebaseAuth.currentUser;
@@ -65,12 +60,10 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Check if user is authenticated
   bool isAuthenticated() {
     return _firebaseAuth.currentUser != null;
   }
 
-  /// Determine user role from email
   UserRole _getRoleFromEmail(String email) {
     if (email.contains('cook@') || email.contains('chef@')) {
       return UserRole.cook;
@@ -78,7 +71,6 @@ class AuthRemoteDataSource {
     return UserRole.student;
   }
 
-  /// Extract name from email
   String _getNameFromEmail(String email) {
     final username = email.split('@').first;
     return username.split('.').map((part) {
@@ -86,7 +78,6 @@ class AuthRemoteDataSource {
     }).join(' ');
   }
 
-  /// Handle Firebase auth exceptions
   Exception _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':

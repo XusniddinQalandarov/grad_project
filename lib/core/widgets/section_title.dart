@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_text_styles.dart';
 
-/// Reusable section title component for consistent heading styles
 class SectionTitle extends StatelessWidget {
   final String title;
   final String? subtitle;
@@ -59,7 +58,6 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
-/// Small section title variant
 class SectionTitleSmall extends StatelessWidget {
   final String title;
   final Widget? trailing;

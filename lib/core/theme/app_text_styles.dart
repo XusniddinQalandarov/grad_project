@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
-/// Application text styles following Material 3 typography guidelines
-/// All text styles are responsive and adapt to the theme
 class AppTextStyles {
-  // Private constructor to prevent instantiation
   AppTextStyles._();
 
-  // Display Styles
   static TextStyle displayLarge(BuildContext context) => TextStyle(
         fontSize: 57,
         fontWeight: FontWeight.w400,
@@ -32,7 +28,6 @@ class AppTextStyles {
         color: AppColors.textPrimary(Theme.of(context).brightness),
       );
 
-  // Headline Styles
   static TextStyle headlineLarge(BuildContext context) => TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.w400,
@@ -57,7 +52,6 @@ class AppTextStyles {
         color: AppColors.textPrimary(Theme.of(context).brightness),
       );
 
-  // Title Styles
   static TextStyle titleLarge(BuildContext context) => TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w500,
@@ -82,7 +76,6 @@ class AppTextStyles {
         color: AppColors.textPrimary(Theme.of(context).brightness),
       );
 
-  // Label Styles
   static TextStyle labelLarge(BuildContext context) => TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
@@ -107,7 +100,6 @@ class AppTextStyles {
         color: AppColors.textSecondary(Theme.of(context).brightness),
       );
 
-  // Body Styles
   static TextStyle bodyLarge(BuildContext context) => TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
@@ -132,7 +124,6 @@ class AppTextStyles {
         color: AppColors.textSecondary(Theme.of(context).brightness),
       );
 
-  // Custom Styles
   static TextStyle button(BuildContext context) => TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,

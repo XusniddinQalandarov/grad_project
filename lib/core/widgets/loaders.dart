@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-/// Circular loading indicator with app theme colors
 class AppLoader extends StatelessWidget {
   final double size;
   final Color? color;
@@ -29,7 +28,6 @@ class AppLoader extends StatelessWidget {
   }
 }
 
-/// Small inline loader
 class AppLoaderSmall extends StatelessWidget {
   final Color? color;
 
@@ -44,7 +42,6 @@ class AppLoaderSmall extends StatelessWidget {
   }
 }
 
-/// Centered loading indicator with optional message
 class AppLoadingIndicator extends StatelessWidget {
   final String? message;
 
@@ -81,7 +78,6 @@ class AppLoadingIndicator extends StatelessWidget {
   }
 }
 
-/// Linear progress indicator
 class AppLinearLoader extends StatelessWidget {
   final double? value;
   final Color? color;
@@ -108,7 +104,6 @@ class AppLinearLoader extends StatelessWidget {
   }
 }
 
-/// Empty state widget
 class EmptyState extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -169,7 +164,6 @@ class EmptyState extends StatelessWidget {
   }
 }
 
-/// Error state widget
 class ErrorState extends StatelessWidget {
   final String title;
   final String? subtitle;

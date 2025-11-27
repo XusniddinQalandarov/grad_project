@@ -3,7 +3,6 @@ import '../../domain/entities/menu_item.dart';
 
 part 'canteen_state.freezed.dart';
 
-/// State for canteen feature
 @freezed
 class CanteenState with _$CanteenState {
   const factory CanteenState({

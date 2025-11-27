@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/menu_item.dart';
 
-/// Firebase Firestore data source for menu items
 class CanteenFirestoreDataSource {
   final FirebaseFirestore _firestore;
   static const String _collection = 'menu_items';
 
   CanteenFirestoreDataSource(this._firestore);
 
-  /// Get all menu items
   Stream<List<MenuItem>> getMenuItemsStream() {
     return _firestore
         .collection(_collection)
@@ -23,7 +21,6 @@ class CanteenFirestoreDataSource {
     });
   }
 
-  /// Get menu items for a specific date
   Future<List<MenuItem>> getMenuItemsByDate(DateTime date) async {
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
@@ -41,7 +38,6 @@ class CanteenFirestoreDataSource {
     }).toList();
   }
 
-  /// Add new menu item
   Future<String> addMenuItem(MenuItem item) async {
     final docRef = await _firestore.collection(_collection).add({
       'name': item.name,
@@ -58,7 +54,6 @@ class CanteenFirestoreDataSource {
     return docRef.id;
   }
 
-  /// Update menu item
   Future<void> updateMenuItem(MenuItem item) async {
     await _firestore.collection(_collection).doc(item.id).update({
       'name': item.name,
@@ -74,12 +69,10 @@ class CanteenFirestoreDataSource {
     });
   }
 
-  /// Delete menu item
   Future<void> deleteMenuItem(String id) async {
     await _firestore.collection(_collection).doc(id).delete();
   }
 
-  /// Update quantity
   Future<void> updateQuantity(String id, int quantity) async {
     await _firestore.collection(_collection).doc(id).update({
       'quantityAvailable': quantity,

@@ -5,7 +5,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/widgets/app_button.dart';
 
-/// Modal showing detailed information about a menu item
 class MenuItemDetailModal extends StatelessWidget {
   final MenuItem item;
 

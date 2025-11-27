@@ -4,7 +4,6 @@ import 'user_role.dart';
 part 'app_user.freezed.dart';
 part 'app_user.g.dart';
 
-/// Domain entity for authenticated user
 @freezed
 class AppUser with _$AppUser {
   const factory AppUser({

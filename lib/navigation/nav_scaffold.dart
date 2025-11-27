@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_colors.dart';
 
-/// Navigation scaffold with bottom navigation bar
-/// Manages tab state and renders appropriate screens
 class NavScaffold extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 

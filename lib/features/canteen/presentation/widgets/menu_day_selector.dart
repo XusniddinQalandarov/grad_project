@@ -3,7 +3,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/extensions.dart';
 
-/// Small widget for selecting a day
 class MenuDaySelector extends StatelessWidget {
   final DateTime selectedDate;
   final Function(DateTime) onDateSelected;

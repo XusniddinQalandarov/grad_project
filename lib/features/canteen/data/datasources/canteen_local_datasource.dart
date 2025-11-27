@@ -1,20 +1,14 @@
 import '../../domain/entities/menu_item.dart';
 
-/// Local data source for canteen menu items
-/// In a real app, this would fetch from a local database or cache
 class CanteenLocalDataSource {
-  /// Fetches menu items for a specific date
   Future<List<MenuItem>> getMenuItemsByDate(DateTime date) async {
-    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
     
-    // Return mock data
     return _getMockMenuItems()
         .where((item) => _isSameDay(item.availableDate, date))
         .toList();
   }
 
-  /// Fetches menu items for a week starting from startDate
   Future<List<MenuItem>> getMenuItemsForWeek(DateTime startDate) async {
     await Future.delayed(const Duration(milliseconds: 800));
     
@@ -26,7 +20,6 @@ class CanteenLocalDataSource {
         .toList();
   }
 
-  /// Fetches menu items filtered by tags
   Future<List<MenuItem>> getMenuItemsByTags(List<String> tags) async {
     await Future.delayed(const Duration(milliseconds: 500));
     
@@ -43,11 +36,9 @@ class CanteenLocalDataSource {
         date1.day == date2.day;
   }
 
-  /// Mock data generator
   List<MenuItem> _getMockMenuItems() {
     final today = DateTime.now();
     return [
-      // Today's menu
       MenuItem(
         id: '1',
         name: 'Grilled Chicken Salad',
@@ -99,7 +90,6 @@ class CanteenLocalDataSource {
         availableDate: today,
       ),
       
-      // Tomorrow's menu
       MenuItem(
         id: '6',
         name: 'Caesar Salad',

@@ -3,7 +3,6 @@ import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_datasource.dart';
 import '../datasources/auth_local_datasource.dart';
 
-/// Implementation of auth repository
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
   final AuthLocalDataSource _localDataSource;
@@ -34,17 +33,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AppUser?> getCurrentUser() async {
     try {
-      // Try to get from Firebase first
       final user = await _remoteDataSource.getCurrentUser();
       if (user != null) {
         await _localDataSource.saveUser(user);
         return user;
       }
       
-      // Fallback to cached user
       return _localDataSource.getCachedUser();
     } catch (e) {
-      // Return cached user on error
       return _localDataSource.getCachedUser();
     }
   }

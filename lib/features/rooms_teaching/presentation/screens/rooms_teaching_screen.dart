@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/section_title.dart';
 import '../../../../core/widgets/app_card.dart';
 
-/// Rooms & Peer Teaching screen with tabs
 class RoomsTeachingScreen extends StatefulWidget {
   const RoomsTeachingScreen({super.key});
 
@@ -51,7 +50,6 @@ class _RoomsTeachingScreenState extends State<RoomsTeachingScreen>
   }
 }
 
-/// Tab for available rooms
 class _RoomsTab extends StatelessWidget {
   const _RoomsTab();
 
@@ -123,7 +121,6 @@ class _RoomsTab extends StatelessWidget {
   }
 }
 
-/// Tab for peer tutors
 class _TutorsTab extends StatelessWidget {
   const _TutorsTab();
 

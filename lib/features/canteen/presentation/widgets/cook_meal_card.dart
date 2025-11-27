@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../domain/entities/menu_item.dart';
 import '../../data/providers/canteen_repository_provider.dart';
 
-/// Card widget for cook's meal management
 class CookMealCard extends ConsumerWidget {
   final MenuItem meal;
 
@@ -50,7 +49,6 @@ class CookMealCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-            // Image with status overlay
             Stack(
               children: [
                 AspectRatio(
@@ -71,7 +69,6 @@ class CookMealCard extends ConsumerWidget {
                           child: const Icon(Icons.restaurant, size: 64),
                         ),
                 ),
-                // Status badge
                 Positioned(
                   top: 8,
                   right: 8,
@@ -96,7 +93,6 @@ class CookMealCard extends ConsumerWidget {
                     ),
                   ),
                 ),
-                // Quantity badge
                 Positioned(
                   bottom: 8,
                   left: 8,
@@ -132,7 +128,6 @@ class CookMealCard extends ConsumerWidget {
                 ),
               ],
             ),
-            // Meal info
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -196,7 +191,6 @@ class CookMealCard extends ConsumerWidget {
                     ),
                   ],
                   const SizedBox(height: 12),
-                  // Quick quantity controls
                   Row(
                     children: [
                       Expanded(

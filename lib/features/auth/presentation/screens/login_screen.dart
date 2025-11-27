@@ -6,7 +6,6 @@ import '../../../../core/widgets/app_button.dart';
 import '../providers/auth_provider.dart';
 import '../state/auth_state.dart';
 
-/// Login screen for authentication
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 

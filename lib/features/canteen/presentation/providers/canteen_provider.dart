@@ -4,13 +4,11 @@ import '../../domain/usecases/get_menu_items_by_date_usecase.dart';
 import '../../data/providers/canteen_repository_provider.dart';
 import '../state/canteen_state.dart';
 
-/// Provider for get menu items use case
 final getMenuItemsByDateUseCaseProvider = Provider((ref) {
   final repository = ref.watch(canteenRepositoryProvider);
   return GetMenuItemsByDateUseCase(repository);
 });
 
-/// Canteen notifier for state management
 class CanteenNotifier extends StateNotifier<CanteenState> {
   final GetMenuItemsByDateUseCase _getMenuItemsByDateUseCase;
 
@@ -19,7 +17,6 @@ class CanteenNotifier extends StateNotifier<CanteenState> {
     loadMenuItems();
   }
 
-  /// Loads menu items for the selected date
   Future<void> loadMenuItems() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     
@@ -37,13 +34,11 @@ class CanteenNotifier extends StateNotifier<CanteenState> {
     }
   }
 
-  /// Changes the selected date and reloads menu items
   Future<void> changeDate(DateTime newDate) async {
     state = state.copyWith(selectedDate: newDate);
     await loadMenuItems();
   }
 
-  /// Toggles a tag filter
   void toggleTag(String tag) {
     final currentTags = List<String>.from(state.selectedTags);
     if (currentTags.contains(tag)) {
@@ -54,12 +49,10 @@ class CanteenNotifier extends StateNotifier<CanteenState> {
     state = state.copyWith(selectedTags: currentTags);
   }
 
-  /// Clears all tag filters
   void clearTags() {
     state = state.copyWith(selectedTags: []);
   }
 
-  /// Gets filtered menu items based on selected tags
   List<MenuItem> get filteredMenuItems {
     if (state.selectedTags.isEmpty) {
       return state.menuItems;
@@ -70,14 +63,12 @@ class CanteenNotifier extends StateNotifier<CanteenState> {
   }
 }
 
-/// Provider for canteen notifier
 final canteenNotifierProvider =
     StateNotifierProvider<CanteenNotifier, CanteenState>((ref) {
   final useCase = ref.watch(getMenuItemsByDateUseCaseProvider);
   return CanteenNotifier(useCase);
 });
 
-/// Provider for filtered menu items
 final filteredMenuItemsProvider = Provider((ref) {
   final notifier = ref.watch(canteenNotifierProvider.notifier);
   ref.watch(canteenNotifierProvider);

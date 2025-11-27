@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// Cook-specific navigation scaffold with only canteen and profile
 class CookNavScaffold extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 

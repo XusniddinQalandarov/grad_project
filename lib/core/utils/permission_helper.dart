@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// Helper class for requesting camera and storage permissions
 class PermissionHelper {
-  /// Request camera permission
   static Future<bool> requestCameraPermission(BuildContext context) async {
     final status = await Permission.camera.request();
     
@@ -28,7 +26,6 @@ class PermissionHelper {
     return status.isGranted;
   }
   
-  /// Request storage permission
   static Future<bool> requestStoragePermission(BuildContext context) async {
     final status = await Permission.storage.request();
     
@@ -53,7 +50,6 @@ class PermissionHelper {
     return status.isGranted;
   }
   
-  /// Request photos permission (Android 13+)
   static Future<bool> requestPhotosPermission(BuildContext context) async {
     final status = await Permission.photos.request();
     

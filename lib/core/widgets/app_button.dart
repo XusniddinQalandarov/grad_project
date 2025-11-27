@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
-/// Button variants
 enum AppButtonVariant {
   primary,
   secondary,
@@ -10,8 +9,6 @@ enum AppButtonVariant {
   outlined,
 }
 
-/// Reusable button component with multiple variants
-/// Adapts to light/dark theme automatically
 class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;

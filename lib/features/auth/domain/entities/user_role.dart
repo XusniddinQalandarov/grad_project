@@ -1,4 +1,3 @@
-/// User roles in the system
 enum UserRole {
   student('student'),
   cook('cook');

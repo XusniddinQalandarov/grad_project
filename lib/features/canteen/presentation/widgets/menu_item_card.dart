@@ -5,7 +5,6 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/extensions.dart';
 
-/// Small widget for displaying a menu item card
 class MenuItemCard extends StatelessWidget {
   final MenuItem item;
   final VoidCallback? onTap;
@@ -136,7 +135,6 @@ class MenuItemCard extends StatelessWidget {
   }
 }
 
-/// Small chip for displaying tags
 class _TagChip extends StatelessWidget {
   final String tag;
 

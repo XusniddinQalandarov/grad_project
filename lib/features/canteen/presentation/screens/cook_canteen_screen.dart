@@ -5,7 +5,6 @@ import '../../../../core/widgets/section_title.dart';
 import '../../data/providers/canteen_repository_provider.dart';
 import '../widgets/cook_meal_card.dart';
 
-/// Cook's main screen for managing meals
 class CookCanteenScreen extends ConsumerWidget {
   const CookCanteenScreen({super.key});
 
@@ -64,7 +63,6 @@ class CookCanteenScreen extends ConsumerWidget {
             );
           }
 
-          // Group by availability
           final availableMeals =
               menuItems.where((item) => item.isAvailable).toList();
           final unavailableMeals =

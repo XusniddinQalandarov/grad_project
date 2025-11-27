@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'menu_item.freezed.dart';
 part 'menu_item.g.dart';
 
-/// Converter for Firestore Timestamp to DateTime
 class TimestampConverter implements JsonConverter<DateTime, dynamic> {
   const TimestampConverter();
 
@@ -26,7 +25,6 @@ class TimestampConverter implements JsonConverter<DateTime, dynamic> {
   dynamic toJson(DateTime date) => Timestamp.fromDate(date);
 }
 
-/// Domain entity for a canteen menu item
 @freezed
 class MenuItem with _$MenuItem {
   const factory MenuItem({

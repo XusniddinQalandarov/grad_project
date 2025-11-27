@@ -3,7 +3,6 @@ import '../../domain/entities/app_user.dart';
 
 part 'auth_state.freezed.dart';
 
-/// State for authentication
 @freezed
 class AuthState with _$AuthState {
   const factory AuthState({

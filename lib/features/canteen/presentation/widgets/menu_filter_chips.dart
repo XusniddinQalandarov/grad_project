@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
-/// Small widget for filter chips
 class MenuFilterChips extends StatelessWidget {
   final List<String> availableTags;
   final List<String> selectedTags;

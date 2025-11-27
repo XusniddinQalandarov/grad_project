@@ -9,7 +9,6 @@ import '../../domain/entities/menu_item.dart';
 
 part 'canteen_repository_provider.g.dart';
 
-/// Provider for Firestore data source
 @riverpod
 CanteenFirestoreDataSource canteenFirestoreDataSource(
   CanteenFirestoreDataSourceRef ref,
@@ -17,27 +16,23 @@ CanteenFirestoreDataSource canteenFirestoreDataSource(
   return CanteenFirestoreDataSource(FirebaseFirestore.instance);
 }
 
-/// Provider for Storage service
 @riverpod
 StorageService storageService(StorageServiceRef ref) {
   return StorageService(FirebaseStorage.instance);
 }
 
-/// Provider for canteen repository
 @riverpod
 CanteenRepository canteenRepository(CanteenRepositoryRef ref) {
   final dataSource = ref.watch(canteenFirestoreDataSourceProvider);
   return CanteenRepositoryImpl(dataSource);
 }
 
-/// Provider for menu items stream
 @riverpod
 Stream<List<MenuItem>> menuItemsStream(MenuItemsStreamRef ref) {
   final dataSource = ref.watch(canteenFirestoreDataSourceProvider);
   return dataSource.getMenuItemsStream();
 }
 
-/// Provider for menu items by date
 @riverpod
 Future<List<MenuItem>> menuItemsByDate(
   MenuItemsByDateRef ref,

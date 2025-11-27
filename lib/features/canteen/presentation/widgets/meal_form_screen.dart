@@ -9,7 +9,6 @@ import '../../../../core/utils/extensions.dart';
 import '../../domain/entities/menu_item.dart';
 import '../../data/providers/canteen_repository_provider.dart';
 
-/// Screen for adding or editing a meal
 class MealFormScreen extends ConsumerStatefulWidget {
   final MenuItem? editingMeal;
 
@@ -99,7 +98,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
     if (result == null || !mounted) return;
 
     try {
-      // Request appropriate permission
       bool hasPermission = false;
       if (result == ImageSource.camera) {
         hasPermission = await PermissionHelper.requestCameraPermission(context);
@@ -119,7 +117,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
         return;
       }
       
-      // Show loading indicator
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -139,7 +136,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
         );
       }
       
-      // Pick image with error handling
       final image = await picker.pickImage(
         source: result,
         maxWidth: 1920,
@@ -242,17 +238,11 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
 
     try {
       final dataSource = ref.read(canteenFirestoreDataSourceProvider);
-      // final storageService = ref.read(storageServiceProvider); // Not used without Blaze plan
 
-      // Generate or use existing ID
       final mealId = widget.editingMeal?.id ?? const Uuid().v4();
 
-      // Upload image if selected
-      // NOTE: Firebase Storage requires Blaze plan, so we'll use placeholder
       String imageUrl = widget.editingMeal?.imageUrl ?? '';
       if (_selectedImage != null) {
-        // TODO: Implement image upload when Storage is available
-        // For now, use a placeholder or skip image
         imageUrl = 'https://via.placeholder.com/400x300?text=Meal+Image';
         
         if (mounted) {
@@ -335,13 +325,8 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
       setState(() => _isLoading = true);
       try {
         final dataSource = ref.read(canteenFirestoreDataSourceProvider);
-        // final storageService = ref.read(storageServiceProvider); // Not used without Blaze plan
 
         await dataSource.deleteMenuItem(widget.editingMeal!.id);
-        // Skip image deletion - no Storage available
-        // if (widget.editingMeal!.imageUrl?.isNotEmpty == true) {
-        //   await storageService.deleteMealImage(widget.editingMeal!.id);
-        // }
 
         if (mounted) {
           Navigator.pop(context);
@@ -383,7 +368,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            // Image picker
             GestureDetector(
               onTap: _isLoading ? null : _pickImage,
               child: Container(
@@ -427,7 +411,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Name
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -440,7 +423,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Price and Calories
             Row(
               children: [
                 Expanded(
@@ -480,7 +462,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Category and Quantity
             Row(
               children: [
                 Expanded(
@@ -523,7 +504,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Available Date
             InkWell(
               onTap: _isLoading ? null : _selectDate,
               borderRadius: BorderRadius.circular(4),
@@ -541,7 +521,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Description
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -553,7 +532,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Ingredients section
             Text(
               'Ingredients',
               style: Theme.of(context).textTheme.titleMedium,
@@ -595,7 +573,6 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
               ),
             const SizedBox(height: 32),
 
-            // Save button
             AppButton(
               text: widget.editingMeal == null ? 'Add Meal' : 'Save Changes',
               onPressed: _isLoading ? null : _saveMeal,

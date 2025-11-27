@@ -8,7 +8,6 @@ import '../widgets/menu_filter_chips.dart';
 import '../widgets/menu_item_card.dart';
 import '../widgets/menu_item_detail_modal.dart';
 
-/// Main canteen screen showing daily/weekly menu
 class CanteenScreen extends ConsumerWidget {
   const CanteenScreen({super.key});
 

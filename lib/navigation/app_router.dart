@@ -13,7 +13,6 @@ import '../features/profile/presentation/screens/profile_screen.dart';
 import 'nav_scaffold.dart';
 import 'cook_nav_scaffold.dart';
 
-/// Route paths
 class AppRoutes {
   static const String login = '/login';
   static const String canteen = '/canteen';
@@ -24,7 +23,6 @@ class AppRoutes {
   static const String profile = '/profile';
 }
 
-/// Router provider with authentication guard
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authNotifierProvider);
   final user = authState.user;
@@ -38,26 +36,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final isAuthenticated = authState.isAuthenticated;
       final isGoingToLogin = state.matchedLocation == AppRoutes.login;
 
-      // Not authenticated and not going to login -> redirect to login
       if (!isAuthenticated && !isGoingToLogin) {
         return AppRoutes.login;
       }
 
-      // Authenticated and going to login -> redirect based on role
       if (isAuthenticated && isGoingToLogin) {
         return isCook ? AppRoutes.cookCanteen : AppRoutes.canteen;
       }
 
-      // No redirect needed
       return null;
     },
     routes: [
-      // Login Route
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginScreen(),
       ),
-      // Cook Routes
       if (isCook) ...[
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
@@ -92,14 +85,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ],
         ),
       ],
-      // Student Routes
       if (!isCook) ...[
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return NavScaffold(navigationShell: navigationShell);
           },
           branches: [
-            // Canteen Branch
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -108,7 +99,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
               ],
             ),
-            // Rooms & Teaching Branch
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -117,7 +107,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
               ],
             ),
-            // Schedule Branch
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -126,7 +115,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
               ],
             ),
-            // Profile Branch
             StatefulShellBranch(
               routes: [
                 GoRoute(
