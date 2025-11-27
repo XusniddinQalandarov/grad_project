@@ -47,6 +47,26 @@ final storageServiceProvider = AutoDisposeProvider<StorageService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef StorageServiceRef = AutoDisposeProviderRef<StorageService>;
+String _$canteenRepositoryHash() => r'6cf0025e7bf7e9978abcaf00e1326276f4354842';
+
+/// Provider for canteen repository
+///
+/// Copied from [canteenRepository].
+@ProviderFor(canteenRepository)
+final canteenRepositoryProvider =
+    AutoDisposeProvider<CanteenRepository>.internal(
+      canteenRepository,
+      name: r'canteenRepositoryProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$canteenRepositoryHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CanteenRepositoryRef = AutoDisposeProviderRef<CanteenRepository>;
 String _$menuItemsStreamHash() => r'fa3a82be7a386e7ff0a791e7943403e65717d8bd';
 
 /// Provider for menu items stream

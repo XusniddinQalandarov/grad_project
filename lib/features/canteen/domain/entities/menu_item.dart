@@ -1,7 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'menu_item.freezed.dart';
 part 'menu_item.g.dart';
+
+/// Converter for Firestore Timestamp to DateTime
+class TimestampConverter implements JsonConverter<DateTime, dynamic> {
+  const TimestampConverter();
+
+  @override
+  DateTime fromJson(dynamic timestamp) {
+    if (timestamp is Timestamp) {
+      return timestamp.toDate();
+    }
+    if (timestamp is String) {
+      return DateTime.parse(timestamp);
+    }
+    if (timestamp is int) {
+      return DateTime.fromMillisecondsSinceEpoch(timestamp);
+    }
+    return DateTime.now();
+  }
+
+  @override
+  dynamic toJson(DateTime date) => Timestamp.fromDate(date);
+}
 
 /// Domain entity for a canteen menu item
 @freezed
@@ -14,7 +37,7 @@ class MenuItem with _$MenuItem {
     required List<String> tags,
     String? description,
     String? imageUrl,
-    required DateTime availableDate,
+    @TimestampConverter() required DateTime availableDate,
     @Default([]) List<String> ingredients,
     @Default(0) int quantityAvailable,
     @Default(true) bool isAvailable,

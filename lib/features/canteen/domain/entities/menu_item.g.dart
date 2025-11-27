@@ -15,7 +15,7 @@ _$MenuItemImpl _$$MenuItemImplFromJson(Map<String, dynamic> json) =>
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      availableDate: DateTime.parse(json['availableDate'] as String),
+      availableDate: const TimestampConverter().fromJson(json['availableDate']),
       ingredients:
           (json['ingredients'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -25,17 +25,18 @@ _$MenuItemImpl _$$MenuItemImplFromJson(Map<String, dynamic> json) =>
       isAvailable: json['isAvailable'] as bool? ?? true,
     );
 
-Map<String, dynamic> _$$MenuItemImplToJson(_$MenuItemImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'price': instance.price,
-      'calories': instance.calories,
-      'tags': instance.tags,
-      'description': instance.description,
-      'imageUrl': instance.imageUrl,
-      'availableDate': instance.availableDate.toIso8601String(),
-      'ingredients': instance.ingredients,
-      'quantityAvailable': instance.quantityAvailable,
-      'isAvailable': instance.isAvailable,
-    };
+Map<String, dynamic> _$$MenuItemImplToJson(
+  _$MenuItemImpl instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'price': instance.price,
+  'calories': instance.calories,
+  'tags': instance.tags,
+  'description': instance.description,
+  'imageUrl': instance.imageUrl,
+  'availableDate': const TimestampConverter().toJson(instance.availableDate),
+  'ingredients': instance.ingredients,
+  'quantityAvailable': instance.quantityAvailable,
+  'isAvailable': instance.isAvailable,
+};

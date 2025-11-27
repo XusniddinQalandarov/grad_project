@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/menu_item.dart';
-import 'meal_form_screen.dart';
+import '../../data/providers/canteen_repository_provider.dart';
 
 /// Card widget for cook's meal management
 class CookMealCard extends ConsumerWidget {
@@ -13,19 +13,43 @@ class CookMealCard extends ConsumerWidget {
     required this.meal,
   });
 
+  Future<void> _adjustQuantity(BuildContext context, WidgetRef ref, int change) async {
+    final newQuantity = (meal.quantityAvailable + change).clamp(0, 999);
+    
+    try {
+      final dataSource = ref.read(canteenFirestoreDataSourceProvider);
+      await dataSource.updateQuantity(meal.id, newQuantity);
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              newQuantity == 0 
+                  ? 'Marked as out of stock' 
+                  : 'Quantity updated to $newQuantity',
+            ),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          context.go('/cook/canteen/add-meal', extra: meal);
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             // Image with status overlay
             Stack(
               children: [
@@ -124,7 +148,7 @@ class CookMealCard extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        '${meal.price.toStringAsFixed(0)}₸',
+                        '${meal.price.toStringAsFixed(0)} UZS',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
@@ -171,11 +195,51 @@ class CookMealCard extends ConsumerWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
+                  const SizedBox(height: 12),
+                  // Quick quantity controls
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: meal.quantityAvailable > 0
+                              ? () => _adjustQuantity(context, ref, -1)
+                              : null,
+                          icon: const Icon(Icons.remove, size: 18),
+                          label: const Text('Sold 1'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => _adjustQuantity(context, ref, 1),
+                          icon: const Icon(Icons.add, size: 18),
+                          label: const Text('Add 1'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.go('/cook/canteen/add-meal', extra: meal);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                          child: const Text('Edit'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

@@ -1,25 +1,37 @@
 import '../../domain/entities/menu_item.dart';
 import '../../domain/repositories/canteen_repository.dart';
-import '../datasources/canteen_local_datasource.dart';
+import '../datasources/canteen_firestore_datasource.dart';
 
-/// Implementation of CanteenRepository
+/// Implementation of CanteenRepository using Firestore
 class CanteenRepositoryImpl implements CanteenRepository {
-  final CanteenLocalDataSource _localDataSource;
+  final CanteenFirestoreDataSource _firestoreDataSource;
 
-  CanteenRepositoryImpl(this._localDataSource);
+  CanteenRepositoryImpl(this._firestoreDataSource);
 
   @override
   Future<List<MenuItem>> getMenuItemsByDate(DateTime date) async {
-    return await _localDataSource.getMenuItemsByDate(date);
+    return await _firestoreDataSource.getMenuItemsByDate(date);
   }
 
   @override
   Future<List<MenuItem>> getMenuItemsForWeek(DateTime startDate) async {
-    return await _localDataSource.getMenuItemsForWeek(startDate);
+    // Get items for 7 days starting from startDate
+    final List<MenuItem> allItems = [];
+    for (int i = 0; i < 7; i++) {
+      final date = startDate.add(Duration(days: i));
+      final items = await _firestoreDataSource.getMenuItemsByDate(date);
+      allItems.addAll(items);
+    }
+    return allItems;
   }
 
   @override
   Future<List<MenuItem>> getMenuItemsByTags(List<String> tags) async {
-    return await _localDataSource.getMenuItemsByTags(tags);
+    // Get all items from stream and filter by tags
+    // Note: For better performance, this should be done with Firestore queries
+    final snapshot = await _firestoreDataSource.getMenuItemsStream().first;
+    return snapshot
+        .where((item) => item.tags.any((tag) => tags.contains(tag)))
+        .toList();
   }
 }

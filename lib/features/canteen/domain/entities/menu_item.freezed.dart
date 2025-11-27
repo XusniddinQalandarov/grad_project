@@ -28,6 +28,7 @@ mixin _$MenuItem {
   List<String> get tags => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
+  @TimestampConverter()
   DateTime get availableDate => throw _privateConstructorUsedError;
   List<String> get ingredients => throw _privateConstructorUsedError;
   int get quantityAvailable => throw _privateConstructorUsedError;
@@ -56,7 +57,7 @@ abstract class $MenuItemCopyWith<$Res> {
     List<String> tags,
     String? description,
     String? imageUrl,
-    DateTime availableDate,
+    @TimestampConverter() DateTime availableDate,
     List<String> ingredients,
     int quantityAvailable,
     bool isAvailable,
@@ -159,7 +160,7 @@ abstract class _$$MenuItemImplCopyWith<$Res>
     List<String> tags,
     String? description,
     String? imageUrl,
-    DateTime availableDate,
+    @TimestampConverter() DateTime availableDate,
     List<String> ingredients,
     int quantityAvailable,
     bool isAvailable,
@@ -254,7 +255,7 @@ class _$MenuItemImpl implements _MenuItem {
     required final List<String> tags,
     this.description,
     this.imageUrl,
-    required this.availableDate,
+    @TimestampConverter() required this.availableDate,
     final List<String> ingredients = const [],
     this.quantityAvailable = 0,
     this.isAvailable = true,
@@ -285,6 +286,7 @@ class _$MenuItemImpl implements _MenuItem {
   @override
   final String? imageUrl;
   @override
+  @TimestampConverter()
   final DateTime availableDate;
   final List<String> _ingredients;
   @override
@@ -374,7 +376,7 @@ abstract class _MenuItem implements MenuItem {
     required final List<String> tags,
     final String? description,
     final String? imageUrl,
-    required final DateTime availableDate,
+    @TimestampConverter() required final DateTime availableDate,
     final List<String> ingredients,
     final int quantityAvailable,
     final bool isAvailable,
@@ -398,6 +400,7 @@ abstract class _MenuItem implements MenuItem {
   @override
   String? get imageUrl;
   @override
+  @TimestampConverter()
   DateTime get availableDate;
   @override
   List<String> get ingredients;

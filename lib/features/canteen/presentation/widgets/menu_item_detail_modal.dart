@@ -161,9 +161,13 @@ class MenuItemDetailModal extends StatelessWidget {
   }
 
   Widget _buildAvailabilityChip(Brightness brightness) {
-    // Mock availability - in real app this would come from backend
-    final available = 15;
-    final color = available > 10 ? AppColors.success : AppColors.warning;
+    final available = item.quantityAvailable;
+    final isAvailable = item.isAvailable;
+    final color = !isAvailable 
+        ? AppColors.error 
+        : available > 10 
+            ? AppColors.success 
+            : AppColors.warning;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -204,18 +208,9 @@ class MenuItemDetailModal extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _InfoCard(
-            icon: Icons.access_time,
-            label: 'Prep Time',
-            value: '15 min',
-            brightness: brightness,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.star,
-            label: 'Rating',
-            value: '4.5',
+            icon: Icons.inventory_2_outlined,
+            label: 'Available',
+            value: '${item.quantityAvailable}',
             brightness: brightness,
           ),
         ),
@@ -245,8 +240,7 @@ class MenuItemDetailModal extends StatelessWidget {
   }
 
   Widget _buildIngredients(BuildContext context, Brightness brightness) {
-    // Mock ingredients - in real app this would come from the entity
-    final ingredients = _getMockIngredients();
+    if (item.ingredients.isEmpty) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +253,7 @@ class MenuItemDetailModal extends StatelessWidget {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: ingredients.map((ingredient) {
+          children: item.ingredients.map((ingredient) {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
@@ -335,23 +329,6 @@ class MenuItemDetailModal extends StatelessWidget {
         );
       },
     );
-  }
-
-  List<String> _getMockIngredients() {
-    // Mock ingredients based on menu item name
-    if (item.name.toLowerCase().contains('chicken')) {
-      return ['Chicken breast', 'Mixed greens', 'Tomatoes', 'Olive oil', 'Lemon'];
-    } else if (item.name.toLowerCase().contains('burger')) {
-      return ['Beef patty', 'Lettuce', 'Tomato', 'Onion', 'Cheese', 'Bun'];
-    } else if (item.name.toLowerCase().contains('pizza')) {
-      return ['Pizza dough', 'Tomato sauce', 'Mozzarella', 'Bell peppers', 'Mushrooms'];
-    } else if (item.name.toLowerCase().contains('salmon')) {
-      return ['Salmon fillet', 'Quinoa', 'Broccoli', 'Carrots', 'Lemon butter'];
-    } else if (item.name.toLowerCase().contains('pasta')) {
-      return ['Pasta', 'Bacon', 'Eggs', 'Parmesan', 'Black pepper'];
-    } else {
-      return ['Fresh ingredients', 'Seasonal produce', 'Quality proteins'];
-    }
   }
 }
 

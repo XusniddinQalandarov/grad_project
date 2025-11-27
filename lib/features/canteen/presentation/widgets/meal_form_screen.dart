@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/utils/permission_helper.dart';
+import '../../../../core/utils/extensions.dart';
 import '../../domain/entities/menu_item.dart';
 import '../../data/providers/canteen_repository_provider.dart';
 
@@ -30,6 +32,7 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
   String _selectedCategory = 'Main Course';
   File? _selectedImage;
   bool _isLoading = false;
+  DateTime _selectedDate = DateTime.now();
 
   final List<String> _categories = [
     'Main Course',
@@ -51,6 +54,7 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
       _quantityController.text =
           widget.editingMeal!.quantityAvailable.toString();
       _ingredients.addAll(widget.editingMeal!.ingredients);
+      _selectedDate = widget.editingMeal!.availableDate;
       if (widget.editingMeal!.tags.isNotEmpty) {
         _selectedCategory = widget.editingMeal!.tags.first;
       }
@@ -92,12 +96,94 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
       ),
     );
 
-    if (result != null) {
-      final image = await picker.pickImage(source: result);
-      if (image != null) {
+    if (result == null || !mounted) return;
+
+    try {
+      // Request appropriate permission
+      bool hasPermission = false;
+      if (result == ImageSource.camera) {
+        hasPermission = await PermissionHelper.requestCameraPermission(context);
+      } else {
+        hasPermission = await PermissionHelper.requestPhotosPermission(context);
+      }
+      
+      if (!hasPermission) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Permission denied. Cannot access camera/photos.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+      
+      // Show loading indicator
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                ),
+                const SizedBox(width: 12),
+                Text(result == ImageSource.camera ? 'Opening camera...' : 'Opening gallery...'),
+              ],
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+      
+      // Pick image with error handling
+      final image = await picker.pickImage(
+        source: result,
+        maxWidth: 1920,
+        maxHeight: 1080,
+        imageQuality: 85,
+      ).catchError((error) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to open ${result == ImageSource.camera ? "camera" : "gallery"}: $error'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return null;
+      });
+      
+      if (image != null && mounted) {
         setState(() {
           _selectedImage = File(image.path);
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image selected successfully!'),
+            duration: Duration(seconds: 1),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No image selected'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -107,6 +193,32 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
       setState(() {
         _ingredients.add(_ingredientController.text.trim());
         _ingredientController.clear();
+      });
+    }
+  }
+
+  Future<void> _selectDate() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year, now.month, now.day);
+    final lastDate = firstDate.add(const Duration(days: 30));
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      helpText: 'Select Available Date',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && mounted) {
+      setState(() {
+        _selectedDate = picked;
       });
     }
   }
@@ -130,15 +242,27 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
 
     try {
       final dataSource = ref.read(canteenFirestoreDataSourceProvider);
-      final storageService = ref.read(storageServiceProvider);
+      // final storageService = ref.read(storageServiceProvider); // Not used without Blaze plan
 
       // Generate or use existing ID
       final mealId = widget.editingMeal?.id ?? const Uuid().v4();
 
       // Upload image if selected
+      // NOTE: Firebase Storage requires Blaze plan, so we'll use placeholder
       String imageUrl = widget.editingMeal?.imageUrl ?? '';
       if (_selectedImage != null) {
-        imageUrl = await storageService.uploadMealImage(_selectedImage!, mealId);
+        // TODO: Implement image upload when Storage is available
+        // For now, use a placeholder or skip image
+        imageUrl = 'https://via.placeholder.com/400x300?text=Meal+Image';
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Image selected but not uploaded (Storage not enabled)'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
       }
 
       final quantity = int.parse(_quantityController.text);
@@ -150,7 +274,7 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
         tags: [_selectedCategory],
         description: _descriptionController.text.trim(),
         imageUrl: imageUrl,
-        availableDate: DateTime.now(),
+        availableDate: _selectedDate,
         ingredients: _ingredients,
         quantityAvailable: quantity,
         isAvailable: quantity > 0,
@@ -211,12 +335,13 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
       setState(() => _isLoading = true);
       try {
         final dataSource = ref.read(canteenFirestoreDataSourceProvider);
-        final storageService = ref.read(storageServiceProvider);
+        // final storageService = ref.read(storageServiceProvider); // Not used without Blaze plan
 
         await dataSource.deleteMenuItem(widget.editingMeal!.id);
-        if (widget.editingMeal!.imageUrl?.isNotEmpty == true) {
-          await storageService.deleteMealImage(widget.editingMeal!.id);
-        }
+        // Skip image deletion - no Storage available
+        // if (widget.editingMeal!.imageUrl?.isNotEmpty == true) {
+        //   await storageService.deleteMealImage(widget.editingMeal!.id);
+        // }
 
         if (mounted) {
           Navigator.pop(context);
@@ -322,7 +447,7 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
                   child: TextFormField(
                     controller: _priceController,
                     decoration: const InputDecoration(
-                      labelText: 'Price (₸)',
+                      labelText: 'Price (UZS)',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
@@ -395,6 +520,24 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 16),
+
+            // Available Date
+            InkWell(
+              onTap: _isLoading ? null : _selectDate,
+              borderRadius: BorderRadius.circular(4),
+              child: InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'Available Date',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                child: Text(
+                  _selectedDate.formattedDateLong,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
 

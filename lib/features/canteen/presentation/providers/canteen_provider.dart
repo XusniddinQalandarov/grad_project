@@ -1,20 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/menu_item.dart';
 import '../../domain/usecases/get_menu_items_by_date_usecase.dart';
-import '../../data/repositories/canteen_repository_impl.dart';
-import '../../data/datasources/canteen_local_datasource.dart';
+import '../../data/providers/canteen_repository_provider.dart';
 import '../state/canteen_state.dart';
-
-/// Provider for canteen data source
-final canteenDataSourceProvider = Provider<CanteenLocalDataSource>((ref) {
-  return CanteenLocalDataSource();
-});
-
-/// Provider for canteen repository
-final canteenRepositoryProvider = Provider((ref) {
-  final dataSource = ref.watch(canteenDataSourceProvider);
-  return CanteenRepositoryImpl(dataSource);
-});
 
 /// Provider for get menu items use case
 final getMenuItemsByDateUseCaseProvider = Provider((ref) {

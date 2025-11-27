@@ -202,8 +202,8 @@ extension DoubleExtensions on double {
   }
 
   /// Formats as currency
-  String toCurrency({String symbol = '\$', int decimals = 2}) {
-    return '$symbol${toStringAsFixed(decimals)}';
+  String toCurrency({String symbol = 'UZS', int decimals = 0}) {
+    return '${toStringAsFixed(decimals)} $symbol';
   }
 
   /// Formats as percentage
@@ -215,8 +215,8 @@ extension DoubleExtensions on double {
 /// Extension methods for int
 extension IntExtensions on int {
   /// Formats as currency
-  String toCurrency({String symbol = '\$'}) {
-    return '$symbol$this';
+  String toCurrency({String symbol = 'UZS'}) {
+    return '$this $symbol';
   }
 
   /// Converts to ordinal string (1st, 2nd, 3rd, etc.)
