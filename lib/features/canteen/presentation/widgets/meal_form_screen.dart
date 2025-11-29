@@ -194,28 +194,40 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
   }
 
   Future<void> _selectDate() async {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.year, now.month, now.day);
-    final lastDate = firstDate.add(const Duration(days: 30));
+    try {
+      final now = DateTime.now();
+      final firstDate = DateTime(now.year, now.month, now.day);
+      final lastDate = firstDate.add(const Duration(days: 30));
 
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      helpText: 'Select Available Date',
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context),
-          child: child!,
+      DateTime initialDate = _selectedDate;
+      if (initialDate.isBefore(firstDate)) {
+        initialDate = firstDate;
+      } else if (initialDate.isAfter(lastDate)) {
+        initialDate = lastDate;
+      }
+
+      final picked = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate,
+        helpText: 'Select Available Date',
+      );
+
+      if (picked != null && mounted) {
+        setState(() {
+          _selectedDate = picked;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error opening date picker: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
-      },
-    );
-
-    if (picked != null && mounted) {
-      setState(() {
-        _selectedDate = picked;
-      });
+      }
     }
   }
 
@@ -504,20 +516,16 @@ class _MealFormScreenState extends ConsumerState<MealFormScreen> {
             ),
             const SizedBox(height: 16),
 
-            InkWell(
-              onTap: _isLoading ? null : _selectDate,
-              borderRadius: BorderRadius.circular(4),
-              child: InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'Available Date',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
-                child: Text(
-                  _selectedDate.formattedDateLong,
-                  style: const TextStyle(fontSize: 16),
-                ),
+            TextFormField(
+              readOnly: true,
+              decoration: const InputDecoration(
+                labelText: 'Available Date',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.calendar_today),
               ),
+              controller: TextEditingController(text: _selectedDate.formattedDateLong),
+              onTap: _isLoading ? null : _selectDate,
+              enabled: !_isLoading,
             ),
             const SizedBox(height: 16),
 
