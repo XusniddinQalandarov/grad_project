@@ -9,25 +9,14 @@ class ScheduleFirestoreDataSource {
   ScheduleFirestoreDataSource(this._firestore);
 
   Stream<List<ClassSession>> getClassSessionsStream() {
-    print('🔌 Initializing Firestore stream for class_sessions collection');
     return _firestore
         .collection('class_sessions')
         .snapshots()
-        .handleError((error) {
-          print('❌ Firestore stream error: $error');
-        })
         .map((snapshot) {
-      print('🔥 Firestore snapshot received: ${snapshot.docs.length} documents');
       return snapshot.docs.map((doc) {
-        try {
-          final data = doc.data();
-          data['id'] = doc.id;
-          print('  Document ${doc.id}: ${data['name']} on ${data['dayOfWeek']}');
-          return ClassSession.fromJson(data);
-        } catch (e) {
-          print('❌ Error parsing document ${doc.id}: $e');
-          rethrow;
-        }
+        final data = doc.data();
+        data['id'] = doc.id;
+        return ClassSession.fromJson(data);
       }).toList();
     });
   }

@@ -9,7 +9,6 @@ import '../state/schedule_state.dart';
 
 class ScheduleNotifier extends StateNotifier<ScheduleState> {
   ScheduleNotifier(this._repository) : super(const ScheduleState()) {
-    print('🚀 ScheduleNotifier initialized');
     _init();
   }
 
@@ -19,39 +18,27 @@ class ScheduleNotifier extends StateNotifier<ScheduleState> {
   StreamSubscription<List<Course>>? _coursesSubscription;
 
   void _init() {
-    print('🔧 Initializing Firestore streams...');
     _classSessionsSubscription = _repository.getClassSessionsStream().listen(
       (sessions) {
-        print('📚 Received ${sessions.length} class sessions from Firestore');
-        for (var session in sessions) {
-          print('  - ${session.name} on ${session.dayOfWeek} at ${session.time}');
-        }
         state = state.copyWith(classSessions: sessions);
       },
       onError: (error) {
-        print('❌ Error in class sessions stream: $error');
         state = state.copyWith(errorMessage: error.toString());
       },
     );
 
     _assignmentsSubscription = _repository.getAssignmentsStream().listen(
       (assignments) {
-        print('📝 Received ${assignments.length} assignments from Firestore');
         state = state.copyWith(assignments: assignments);
       },
-      onError: (error) {
-        print('❌ Error in assignments stream: $error');
-      },
+      onError: (error) {},
     );
 
     _coursesSubscription = _repository.getCoursesStream().listen(
       (courses) {
-        print('📖 Received ${courses.length} courses from Firestore');
         state = state.copyWith(courses: courses);
       },
-      onError: (error) {
-        print('❌ Error in courses stream: $error');
-      },
+      onError: (error) {},
     );
   }
 

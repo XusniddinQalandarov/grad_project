@@ -33,6 +33,9 @@ class _RoomsTeachingScreenState extends State<RoomsTeachingScreen>
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: Colors.white,
           tabs: const [
             Tab(text: 'Available Rooms', icon: Icon(Icons.meeting_room)),
             Tab(text: 'Peer Tutors', icon: Icon(Icons.people)),
