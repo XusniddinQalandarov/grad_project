@@ -9,9 +9,7 @@ part of 'canteen_repository_provider.dart';
 String _$canteenFirestoreDataSourceHash() =>
     r'6f7d86bb2be51dbb06f19fffd29fcb117fa3eebf';
 
-/// Provider for Firestore data source
-///
-/// Copied from [canteenFirestoreDataSource].
+/// See also [canteenFirestoreDataSource].
 @ProviderFor(canteenFirestoreDataSource)
 final canteenFirestoreDataSourceProvider =
     AutoDisposeProvider<CanteenFirestoreDataSource>.internal(
@@ -30,9 +28,7 @@ typedef CanteenFirestoreDataSourceRef =
     AutoDisposeProviderRef<CanteenFirestoreDataSource>;
 String _$storageServiceHash() => r'1ab9d647b04f0e9dfec13e505489106bde8af30d';
 
-/// Provider for Storage service
-///
-/// Copied from [storageService].
+/// See also [storageService].
 @ProviderFor(storageService)
 final storageServiceProvider = AutoDisposeProvider<StorageService>.internal(
   storageService,
@@ -49,9 +45,7 @@ final storageServiceProvider = AutoDisposeProvider<StorageService>.internal(
 typedef StorageServiceRef = AutoDisposeProviderRef<StorageService>;
 String _$canteenRepositoryHash() => r'6cf0025e7bf7e9978abcaf00e1326276f4354842';
 
-/// Provider for canteen repository
-///
-/// Copied from [canteenRepository].
+/// See also [canteenRepository].
 @ProviderFor(canteenRepository)
 final canteenRepositoryProvider =
     AutoDisposeProvider<CanteenRepository>.internal(
@@ -69,9 +63,7 @@ final canteenRepositoryProvider =
 typedef CanteenRepositoryRef = AutoDisposeProviderRef<CanteenRepository>;
 String _$menuItemsStreamHash() => r'fa3a82be7a386e7ff0a791e7943403e65717d8bd';
 
-/// Provider for menu items stream
-///
-/// Copied from [menuItemsStream].
+/// See also [menuItemsStream].
 @ProviderFor(menuItemsStream)
 final menuItemsStreamProvider =
     AutoDisposeStreamProvider<List<MenuItem>>.internal(
@@ -110,24 +102,16 @@ class _SystemHash {
   }
 }
 
-/// Provider for menu items by date
-///
-/// Copied from [menuItemsByDate].
+/// See also [menuItemsByDate].
 @ProviderFor(menuItemsByDate)
 const menuItemsByDateProvider = MenuItemsByDateFamily();
 
-/// Provider for menu items by date
-///
-/// Copied from [menuItemsByDate].
+/// See also [menuItemsByDate].
 class MenuItemsByDateFamily extends Family<AsyncValue<List<MenuItem>>> {
-  /// Provider for menu items by date
-  ///
-  /// Copied from [menuItemsByDate].
+  /// See also [menuItemsByDate].
   const MenuItemsByDateFamily();
 
-  /// Provider for menu items by date
-  ///
-  /// Copied from [menuItemsByDate].
+  /// See also [menuItemsByDate].
   MenuItemsByDateProvider call(DateTime date) {
     return MenuItemsByDateProvider(date);
   }
@@ -154,14 +138,10 @@ class MenuItemsByDateFamily extends Family<AsyncValue<List<MenuItem>>> {
   String? get name => r'menuItemsByDateProvider';
 }
 
-/// Provider for menu items by date
-///
-/// Copied from [menuItemsByDate].
+/// See also [menuItemsByDate].
 class MenuItemsByDateProvider
     extends AutoDisposeFutureProvider<List<MenuItem>> {
-  /// Provider for menu items by date
-  ///
-  /// Copied from [menuItemsByDate].
+  /// See also [menuItemsByDate].
   MenuItemsByDateProvider(DateTime date)
     : this._internal(
         (ref) => menuItemsByDate(ref as MenuItemsByDateRef, date),
